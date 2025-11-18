@@ -1,0 +1,358 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #81d4fa, #4fc3f7);
+    color: #333;
+}
+
+body.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cima {
+    background: #0066cc;
+    color: white;
+    padding: 15px;
+}
+
+.cima h1 {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.colunas3 {
+    display: flex;
+    gap: 15px;
+}
+
+.barra-esquerda, .barra-direita {
+    flex: 1;
+    max-width: 200px;
+}
+
+.main-content {
+    /* prioridade na tela ou mais tamanho sla */
+    flex: 2;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #ff6b9d;
+}
+
+.card h3, .card h4 {
+    color: #0066cc;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom, #e6f2ff, #cce6ff);
+    padding: 8px 15px;
+    margin: -15px -15px 10px -15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.post {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #4caf50;
+}
+
+.post-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.post-actions {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.post-actions a{
+    color: #0066cc;
+    text-decoration: none;
+    margin-right: 15px;
+    background: #e8f5e8;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.post-actions a:hover {
+    text-decoration: underline;
+    background: #4caf50;
+    color: white;
+}
+
+.lista-menu, .lista-amigos {
+    list-style: none;
+}
+
+.lista-menu li, .lista-amigos li {
+    margin-bottom: 5px;
+}
+
+.lista-menu a {
+    color: #0066cc;
+    text-decoration: none;
+    padding: 4px 8px;
+    display: block;
+    border-radius: 3px;
+}
+
+.lista-menu a:hover {
+    text-decoration: underline;
+    background: #ffe0f0;
+    color: #ff6b9d;
+}
+
+.lista-amigos li {
+    color: #666;
+    padding: 5px 8px;
+    border-bottom: 1px solid #eee;
+    border-left: 2px solid #4caf50;
+    margin-left: 5px;
+}
+
+.lista-amigos li:hover {
+    background: #e8f5e8;
+    color: #4caf50;
+}
+
+.activity-item {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    border-left: 3px solid #ffeb3b;
+    padding-left: 10px;
+    margin-left: 5px;
+}
+
+.activity-item strong{
+    color: #0066cc;
+}
+
+.activity-item:hover{
+    background: #fffde7;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #ff6b9d;
+    box-shadow: 0 0 5px rgba(255, 107, 157, 0.3);
+}
+
+.btn {
+    background: linear-gradient(to bottom, #ff6b9d, #ff4081);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: linear-gradient(to bottom, #ff4081, #e91e63);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .colunas3 {
+        flex-direction: column;
+    }
+    
+    .barra-esquerda, .barra-direita {
+        max-width: none;
+    }
+    .cima h1 {
+        display: block;
+        margin-bottom: 10px;
+    }
+    body.login-page {
+        justify-content: center;
+        padding: 20px;
+    }
+    
+
+    .login-container-wrapper{
+        flex-direction: column;
+        gap: 20px;
+        max-width: 100%;
+    }
+    
+    .container-login, #content-box{
+        margin: 0;
+        max-width: 100%;
+        width: 100%;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+}
+li {
+    list-style: none;
+    padding: 0;
+}
+
+.container-login {
+    max-width: 400px;
+    margin: 0;
+    background: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-top: 5px solid #ff6b9d;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.container-login h1{
+    text-align: center;
+    color: #0066cc;
+    margin-bottom: 20px;
+}
+
+.container-login h2{
+    color: #666;
+    margin: 20px 0 15px 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.form-row{
+    display: flex;
+    gap: 15px;
+}
+
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.login-links{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-links a{
+    color: #0066cc;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+    border: 2px solid #4caf50;
+    border-radius: 5px;
+    background: #e8f5e8;
+    font-weight: bold;
+}
+.login-links a:hover{
+    background: #4caf50;
+    color: white;
+}
+.barra-esquerda .card{
+    border-left-color: #4caf50;
+}
+
+.barra-direita .card {
+    border-left-color: #ff6b9d;
+
+}
+
+.login-container-wrapper{
+    display: flex;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+}
+
+#content-box{
+    flex: 1;
+    max-width: none;
+    background: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-top: 5px solid #4caf50;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 400px;
+    border-right: none;
+    margin-left: 50px;
+}
+#content-box h2 {
+    color: #0066cc;
+    margin-bottom: 15px;
+}
+
+#content-box p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+
+body.login-page .container-login{
+    margin-right: 50px;
+    flex-shrink: 0;
+    width: 400px;
+    border-left: none;
+}
+/* Estilo específico para página de cadastro - centralizada */
+/* no corpo .login-page se o container-login não for o login-container-wrapper ou o container-login o contaienr vai pro centro da tela*/
+body.login-page .container-login:not(.login-container-wrapper .container-login) {
+    margin: 0 auto;
+    max-width: 400px;
+}
+body.login-page .img-logo img {
+    width: 100px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+.img-logo {
+    margin-top: 10%;
+}
