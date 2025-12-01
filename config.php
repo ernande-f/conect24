@@ -1,6 +1,6 @@
 <?php
 
-CONST DB_HOST = '127.0.0.1';
+CONST DB_HOST = 'localhost';
 CONST DB_USER = 'root';
 CONST DB_PASS = '';
 CONST DB_NAME = 'conect24';

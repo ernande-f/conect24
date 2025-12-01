@@ -9,7 +9,7 @@ if (!isset($_SESSION['nome_usuario'])) {
 }
 
 $nome_usuario = $_SESSION['nome_usuario'];
-$user_id = $_SESSION['user_id'];
+$user_id = intval($_SESSION['user_id']);
 
 // consultar data de nascimento e calcular idade
 $consulta_data_nasc = $mysqli->query("SELECT DATA_NASC FROM PERFIL WHERE NOME='" . $nome_usuario . "' LIMIT 1");
@@ -20,6 +20,14 @@ $idade = $data_nasc->diff(new DateTime())->y;
 
 // consultar foto
 $consultar_foto = $mysqli->query("SELECT FOTO FROM PERFIL WHERE ID='" . $_SESSION['user_id'] . "' LIMIT 1");
+
+// Postagens do usuario logado
+$user_posts = $mysqli->query("
+    SELECT ID, TEXTO, IMAGEM
+    FROM POSTAGEM
+    WHERE PERFIL_ID = $user_id
+    ORDER BY ID DESC
+");
 
 ?>
 <!DOCTYPE html>
@@ -112,18 +120,23 @@ $consultar_foto = $mysqli->query("SELECT FOTO FROM PERFIL WHERE ID='" . $_SESSIO
                         ?>
                     </p>
                 </div>
- 
+
                 <div class="card">
-                    <h3>Comunidades</h3>
-                    <ul class="menu-list">
-                        <li><a href="#">acaba capitalismo</a></li>
-                        <li><a href="#">luta de classes</a></li>
-                        <li><a href="#">proletariado</a></li>
-                        <li><a href="#">alemanha best moments</a></li>
-                        <li><a href="#">uniao dos trabalhadores</a></li>
-                    </ul>
-                    <br>
-                    <a href="cadastrar-comunidades.html">Ver todas as comunidades</a>
+                    <h3>Minhas postagens</h3>
+                    <?php if ($user_posts && $user_posts->num_rows > 0):
+                        while ($post = $user_posts->fetch_assoc()): ?>
+                            <div class="post">
+                                <div><?php echo nl2br(htmlspecialchars($post['TEXTO'])); ?></div>
+                                <?php if (!empty($post['IMAGEM'])): ?>
+                                    <div class="post-image">
+                                        <img src="<?php echo htmlspecialchars($post['IMAGEM']); ?>" alt="Imagem da postagem" style="max-width: 100%; height: auto;">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endwhile;
+                            else: ?>
+                        <p>Voce ainda nao postou nada.</p>
+                    <?php endif; ?>
                 </div>
             </div>
             

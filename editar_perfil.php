@@ -11,7 +11,7 @@ require_once __DIR__ . '/config.php';
 $user_id = $_SESSION['user_id']; // ID único do usuário
 $nome_usuario = $_SESSION['nome_usuario'];
 
-// Processar o formulário quando enviado
+// processa o formulário quando enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome_novo = $_POST['nome'];
     $email_novo = $_POST['email'];
@@ -19,26 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bio_novo = $_POST['bio'];
     $foto_path = null;
     
-    // Processar upload da foto se foi enviada
+    // processa upload da foto se foi enviada
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
         $foto_nome = $_FILES['foto']['name'];
         $foto_tmp = $_FILES['foto']['tmp_name'];
         
-        // Criar pasta uploads se não existir
+        // cria pasta uploads se ela não existe
         if (!file_exists('uploads')) {
             mkdir('uploads', 0777, true);
         }
         
-        // Gerar nome único para a foto
+        // gera nome único pra foto
         $extensao = pathinfo($foto_nome, PATHINFO_EXTENSION);
         $novo_nome = 'perfil_' . $user_id . '_' . time() . '.' . $extensao;
         $foto_path = 'uploads/' . $novo_nome;
         
-        // Mover arquivo para a pasta uploads
+        // move arquivo pra uploads
         move_uploaded_file($foto_tmp, $foto_path);
     }
     
-    // Atualizar no banco
+    // atualizar no banco
     if ($foto_path) {
         $update = "UPDATE PERFIL SET NOME='$nome_novo', EMAIL='$email_novo', DATA_NASC='$data_nasc_novo', BIO='$bio_novo', FOTO='$foto_path' WHERE ID=$user_id";
     } else {
@@ -92,10 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="margin: 15px 0;">
                             <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid #ddd; margin-bottom: 10px;">
                                 <img id="preview-foto" src="<?php 
-                                    // Buscar foto atual do banco
+                                    // busca foto atual do banco
                                     $query_foto = $mysqli->query("SELECT FOTO FROM PERFIL WHERE ID=$user_id");
                                     $foto_atual = $query_foto->fetch_assoc()['FOTO'];
-                                    echo $foto_atual ? htmlspecialchars($foto_atual) : 'https://via.placeholder.com/120'; 
+                                    echo $foto_atual ? htmlspecialchars($foto_atual) : 'uploads/default.png'; 
                                 ?>" alt="Foto de perfil" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                             <input type="file" id="foto" name="foto" accept="image/*">
@@ -107,15 +107,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <br><br>
                         
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" value="<?php 
+                            // pega email atual do banco
+                            $query_email = $mysqli->query("SELECT EMAIL FROM PERFIL WHERE ID=$user_id");
+                            $email_atual = $query_email->fetch_assoc()['EMAIL'];
+                            echo htmlspecialchars($email_atual); ?>">
                         <br><br>
                         
                         <label for="data_nasc">Data de Nascimento:</label>
-                        <input type="date" id="data_nasc" name="data_nasc" required>
+                        <input type="date" id="data_nasc" name="data_nasc" value="<?php 
+                            // pega data de nascimento atual do banco
+                            $query_data = $mysqli->query("SELECT DATA_NASC FROM PERFIL WHERE ID=$user_id");
+                            $data_atual = $query_data->fetch_assoc()['DATA_NASC'];
+                            echo htmlspecialchars($data_atual); ?>">
                         <br><br>
                         
                         <label for="bio">Biografia:</label>
-                        <textarea id="bio" name="bio" rows="5" style="width: 100%;"></textarea>
+                        <textarea id="bio" name="bio" rows="5" style="width: 100%;" ><?php 
+                            // pega biografia atual do banco
+                            $query_bio = $mysqli->query("SELECT BIO FROM PERFIL WHERE ID=$user_id");
+                            $bio_atual = $query_bio->fetch_assoc()['BIO'];
+                            echo htmlspecialchars($bio_atual); 
+                        ?></textarea>
                         <br><br>
                         
                         <button type="submit" class="btn">Salvar Alterações</button>
