@@ -1,6 +1,8 @@
 # Conect24
 
 Conect24 é um protótipo simples de rede social em PHP para estudo. Inclui cadastro/login, feed com postagens de texto e imagem, página de perfil com edição de dados e upload de foto.
+<img width="1359" height="697" alt="image" src="https://github.com/user-attachments/assets/70f9a79e-9589-4d72-8b96-0640975cd9d5" />
+
 
 ## Tecnologias
 - PHP 8+ com sessões nativas
