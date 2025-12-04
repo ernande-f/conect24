@@ -1,56 +1,56 @@
 <?php 
-session_start();
+session_start(); // inicia sessao para controlar autenticacao
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) { // se nao estiver logado, manda para login
     header("Location: index.php");
     exit();
 }
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/config.php'; // carrega configuracao e conexao com o banco
 
-$user_id = $_SESSION['user_id']; // ID único do usuário
-$nome_usuario = $_SESSION['nome_usuario'];
+$user_id = $_SESSION['user_id']; // ID unico do usuario logado
+$nome_usuario = $_SESSION['nome_usuario']; // nome do usuario logado, para exibir
 
-// processa o formulário quando enviado
+// processa o formulario quando enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome_novo = $_POST['nome'];
-    $email_novo = $_POST['email'];
-    $data_nasc_novo = $_POST['data_nasc'];
-    $bio_novo = $_POST['bio'];
-    $foto_path = null;
+    $nome_novo = $_POST['nome']; // novo nome enviado
+    $email_novo = $_POST['email']; // novo email enviado
+    $data_nasc_novo = $_POST['data_nasc']; // nova data de nascimento
+    $bio_novo = $_POST['bio']; // nova bio
+    $foto_path = null; // inicia sem foto ate fazer upload
     
     // processa upload da foto se foi enviada
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
-        $foto_nome = $_FILES['foto']['name'];
-        $foto_tmp = $_FILES['foto']['tmp_name'];
+        $foto_nome = $_FILES['foto']['name']; // nome original do arquivo
+        $foto_tmp = $_FILES['foto']['tmp_name']; // caminho temporario do arquivo
         
-        // cria pasta uploads se ela não existe
+        // cria pasta uploads se ela nao existe
         if (!file_exists('uploads')) {
             mkdir('uploads', 0777, true);
         }
         
-        // gera nome único pra foto
+        // gera nome unico pra foto
         $extensao = pathinfo($foto_nome, PATHINFO_EXTENSION);
         $novo_nome = 'perfil_' . $user_id . '_' . time() . '.' . $extensao;
-        $foto_path = 'uploads/' . $novo_nome;
+        $foto_path = 'uploads/' . $novo_nome; // destino final da foto
         
         // move arquivo pra uploads
         move_uploaded_file($foto_tmp, $foto_path);
     }
     
-    // atualizar no banco
+    // montar update com ou sem foto nova
     if ($foto_path) {
         $update = "UPDATE PERFIL SET NOME='$nome_novo', EMAIL='$email_novo', DATA_NASC='$data_nasc_novo', BIO='$bio_novo', FOTO='$foto_path' WHERE ID=$user_id";
     } else {
         $update = "UPDATE PERFIL SET NOME='$nome_novo', EMAIL='$email_novo', DATA_NASC='$data_nasc_novo', BIO='$bio_novo' WHERE ID=$user_id";
     }
 
-    if ($mysqli->query($update) === TRUE) {
-        $_SESSION['nome_usuario'] = $nome_novo;
-        header("Location: perfil.php");
+    if ($mysqli->query($update) === TRUE) { // executa update no banco
+        $_SESSION['nome_usuario'] = $nome_novo; // atualiza nome na sessao
+        header("Location: perfil.php"); // volta para o perfil
         exit();
     } else {
-        echo "Erro ao atualizar: " . $mysqli->error;
+        echo "Erro ao atualizar: " . $mysqli->error; // exibe erro se falhar
     }
 }
 
@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="cima">
         <h1>Conect24</h1>
         <div class="nav-links">
-            <span style="font-weight: bolder; margin-right: 18px;">Olá, <?php echo htmlspecialchars($nome_usuario); ?>!</span>
-            <a href="home.php">Início</a>
+            <span style="font-weight: bolder; margin-right: 18px;">Ola, <?php echo htmlspecialchars($nome_usuario); ?>!</span>
+            <a href="home.php">Inicio</a>
             <a href="perfil.php">Meu perfil</a>
             <a href="editar_perfil.php">Editar perfil</a>
             <a href="logout.php">Sair</a>
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="margin: 15px 0;">
                             <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid #ddd; margin-bottom: 10px;">
                                 <img id="preview-foto" src="<?php 
-                                    // busca foto atual do banco
+                                    // busca foto atual do banco e mostra ou cai no default
                                     $query_foto = $mysqli->query("SELECT FOTO FROM PERFIL WHERE ID=$user_id");
                                     $foto_atual = $query_foto->fetch_assoc()['FOTO'];
                                     echo $foto_atual ? htmlspecialchars($foto_atual) : 'uploads/default.png'; 
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" value="<?php 
-                            // pega email atual do banco
+                            // pega email atual do banco para preencher o campo
                             $query_email = $mysqli->query("SELECT EMAIL FROM PERFIL WHERE ID=$user_id");
                             $email_atual = $query_email->fetch_assoc()['EMAIL'];
                             echo htmlspecialchars($email_atual); ?>">
@@ -124,14 +124,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <label for="bio">Biografia:</label>
                         <textarea id="bio" name="bio" rows="5" style="width: 100%;" ><?php 
-                            // pega biografia atual do banco
+                            // pega biografia atual do banco para mostrar no textarea
                             $query_bio = $mysqli->query("SELECT BIO FROM PERFIL WHERE ID=$user_id");
                             $bio_atual = $query_bio->fetch_assoc()['BIO'];
                             echo htmlspecialchars($bio_atual); 
                         ?></textarea>
                         <br><br>
                         
-                        <button type="submit" class="btn">Salvar Alterações</button>
+                        <button type="submit" class="btn">Salvar Alteracoes</button>
                         <a href="perfil.php" style="text-decoration: none;">
                             <button type="button" class="btn">Cancelar</button>
                         </a>

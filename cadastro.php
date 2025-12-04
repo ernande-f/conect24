@@ -45,25 +45,25 @@
 </html>
 
 <?php
-session_start();
+session_start(); // inicia a sessao para gerenciar usuario logado e mensagens
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/config.php'; // carrega configuracao e conexao com o banco
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $mysqli->real_escape_string($_POST['nome']);
-    $email = $mysqli->real_escape_string($_POST['email_novo']);
-    $senha = $mysqli->real_escape_string($_POST['senha_nova']);
-    $data_nascimento = $mysqli->real_escape_string($_POST['nascimento']);
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // so processa se for envio do formulario
+    $nome = $mysqli->real_escape_string($_POST['nome']); // sanitiza nome
+    $email = $mysqli->real_escape_string($_POST['email_novo']); // sanitiza email
+    $senha = $mysqli->real_escape_string($_POST['senha_nova']); // sanitiza senha digitada
+    $data_nascimento = $mysqli->real_escape_string($_POST['nascimento']); // sanitiza data de nascimento
 
-    $senha_hash = hash('sha256', $senha);
+    $senha_hash = hash('sha256', $senha); // gera hash simples da senha
 
     $query = "INSERT INTO perfil (nome, senha_hash, email, data_nasc) VALUES ('$nome', '$senha_hash', '$email', '$data_nascimento')";
-    if ($mysqli->query($query) === TRUE) {
-        $_SESSION['mensagem'] = "Cadastro realizado com sucesso!";
-        header("Location: index.php");
+    if ($mysqli->query($query) === TRUE) { // tenta inserir perfil no banco
+        $_SESSION['mensagem'] = "Cadastro realizado com sucesso!"; // guarda aviso de sucesso
+        header("Location: index.php"); // redireciona para pagina de login
         exit();
     } else {
-        $_SESSION['mensagem'] = "Erro ao cadastrar: " . $mysqli->error;
+        $_SESSION['mensagem'] = "Erro ao cadastrar: " . $mysqli->error; // guarda erro para exibir
     }
 }
 ?>

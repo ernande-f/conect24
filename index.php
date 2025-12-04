@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); // inicia sessao para manter login apos autenticar
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,7 @@ session_start();
             <h2>Entre na sua conta</h2>
             
             <?php
-            if (isset($_GET['erro'])) {
+            if (isset($_GET['erro'])) { // se chegou erro via querystring, mostra alerta de login
                 echo '<div style="background-color: #ffcccc; border: 1px solid #ff0000; padding: 10px; margin-bottom: 15px; border-radius: 5px; color: #cc0000;">
                         <strong>Erro de login!</strong> Verifique suas credenciais e tente novamente.
                       </div>';

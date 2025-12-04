@@ -1,22 +1,24 @@
 <?php
-session_start();
+session_start(); // inicia a sessao pra saber quem esta logado
 
 if (!isset($_SESSION['nome_usuario'])) {
+    // se nao tem usuario logado, manda pra index e encerra
     header("Location: index.php");
     exit();
 }
 
+// guarda dados do usuario logado pra usar na pagina
 $nome_usuario = $_SESSION['nome_usuario'];
 $user_id = $_SESSION['user_id'] ?? null;
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/config.php'; // puxa config/ conexao com o banco
 
-// carrear mais posts
-$baseLimit = 10; // quantos posts por clique
-$p = max(1, $_GET['p'] ?? 1); // p vai de 1 até p, se não é p
-$limit = $baseLimit * $p; 
+// carregar mais posts
+$baseLimit = 10; // quantos posts cada clique carrega
+$p = max(1, $_GET['p'] ?? 1); // pega a paginacao p da querystring, garantindo minimo 1
+$limit = $baseLimit * $p; // total de posts que vamos pedir agora
 
-// query das postagens no banco de dados
+// query das postagens no banco de dados (texto, imagem e nome do autor)
 $posts = $mysqli->query("
     SELECT PO.ID, PO.TEXTO, PO.IMAGEM, P.NOME
     FROM POSTAGEM PO
@@ -38,7 +40,7 @@ $posts = $mysqli->query("
     <div class="cima">
         <h1>Conect24</h1>
         <div class="nav-links">
-            <span style="font-weight: bolder; margin-right: 18px;">Ola, <?php echo htmlspecialchars($nome_usuario); ?>!</span>
+            <span style="font-weight: bolder; margin-right: 18px;">Ola, <?php echo htmlspecialchars($nome_usuario); // mostra nome do logado ?>!</span>
             <a href="perfil.php">Meu perfil</a>
             <a href="#">Editar perfil</a>
             <a href="logout.php">Sair</a>
@@ -93,14 +95,14 @@ $posts = $mysqli->query("
                     </form>
                 </div>
                 
-                <?php if ($posts && $posts->num_rows > 0):
+                <?php if ($posts && $posts->num_rows > 0): // se veio lista de posts, percorre e mostra um a um
                     while ($row = $posts->fetch_assoc()): ?>
                         <div class="post">
                             <div class="post-header">
-                                <strong><?php echo htmlspecialchars($row['NOME']); ?></strong>
+                                <strong><?php echo htmlspecialchars($row['NOME']); // nome de quem postou ?></strong>
                             </div>
-                            <div><?php echo nl2br(htmlspecialchars($row['TEXTO'])); ?></div>
-                            <?php if (!empty($row['IMAGEM'])): ?>
+                            <div><?php echo nl2br(htmlspecialchars($row['TEXTO'])); // texto do post com quebras ?></div>
+                            <?php if (!empty($row['IMAGEM'])): // se tiver imagem salva, exibe ?>
                                 <div class="post-image">
                                     <img src="<?php echo htmlspecialchars($row['IMAGEM']); ?>" alt="Imagem da postagem" style="max-width: 100%; height: auto;">
                                 </div>
@@ -111,11 +113,11 @@ $posts = $mysqli->query("
                             </div>
                         </div>
                     <?php endwhile;
-                        else: ?>
+                        else: // se nao tiver nenhum post, mostra recado ?>
                     <p>Sem postagens ainda.</p>
                 <?php endif; ?>
 
-                <?php if ($posts && $posts->num_rows >= $limit): ?>
+                <?php if ($posts && $posts->num_rows >= $limit): // se ainda tem mais posts alem do limite, mostra botao pra carregar ?>
                     <form method="get" class="load-more-form">
                         <input type="hidden" name="p" value="<?php echo $p + 1; ?>">
                         <button type="submit" class="btn">Carregar mais</button>
