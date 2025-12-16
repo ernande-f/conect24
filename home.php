@@ -55,7 +55,7 @@ $posts = $mysqli->query("
                     <ul class="lista-menu">
                         <li><a href="home.php">Inicio</a></li>
                         <li><a href="perfil.php">Meu perfil</a></li>
-                        <li><a href="#">Editar perfil</a></li>
+                        <li><a href="editar_perfil.php">Editar perfil</a></li>
                         <li><a href="#">Minhas comunidades</a></li>
                         <li><a href="cadastrar-comunidades.html">Criar comunidade</a></li>
                     </ul>

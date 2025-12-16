@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     // busca foto atual do banco e mostra ou cai no default
                                     $query_foto = $mysqli->query("SELECT FOTO FROM PERFIL WHERE ID=$user_id");
                                     $foto_atual = $query_foto->fetch_assoc()['FOTO'];
-                                    echo $foto_atual ? htmlspecialchars($foto_atual) : 'uploads/default.png'; 
+                                    echo $foto_atual ? htmlspecialchars($foto_atual) : 'uploads/default.jpg'; 
                                 ?>" alt="Foto de perfil" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                             <input type="file" id="foto" name="foto" accept="image/*">

@@ -3,7 +3,7 @@
 // constantes com dados de conexao
 CONST DB_HOST = 'localhost';
 CONST DB_USER = 'root';
-CONST DB_PASS = '';
+CONST DB_PASS = 'root';
 CONST DB_NAME = 'conect24';
 
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); // instancia conexao MySQL
